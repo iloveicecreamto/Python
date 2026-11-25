@@ -1,0 +1,118 @@
+# 1.  Check  python exist on the system
+  python -V
+---------------------------------------------------------------
+
+# 2.  create a folder - open it in terminal, then
+----------------------------------------------------------------
+
+# 3. Install virtual environment
+  python -m venv env
+----------------------------------------------------------------
+
+# 4. Activate python env
+  env\scripts\activate
+----------------------------------------------------------------
+
+# 5. Install django
+  pip install Django
+----------------------------------------------------------------
+
+# 6.  Create Django project
+  django-admin startproject djgoproject .
+----------------------------------------------------------------
+
+# 7. Create Django app
+  django-admin startapp djgoapp
+----------------------------------------------------------------
+
+# 8. Define django app => 'djgoapp', in djgoproject/settings.py => INSTALLED_APPS
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'djgoapp' # created app
+]
+
+----------------------------------------------------------------
+
+# 9. Create a urls.py in djgoapp - add this
+
+from django.contrib import admin
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('', views.home, name='home')
+]
+
+----------------------------------------------------------------
+
+# 10. In djgoapp/views - add this
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def home(request):
+  return HttpResponse('Hello, World!')
+
+----------------------------------------------------------------
+
+# 11.  add this in djgoproject/urls.py
+
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('djgoapp.urls'))
+]
+
+----------------------------------------------------------------
+
+# 12.  add this in djgoapp/models.py - add this
+
+from django.db import models
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.CharField(max_length=100)
+    def __str__(self):
+        return self.title
+
+
+----------------------------------------------------------------
+
+# 13.  add this in djgoapp/admin.py - add this
+
+from django.contrib import admin
+from djgoapp.models import Book
+
+# Register your models here.
+admin.site.register(Book)
+
+----------------------------------------------------------------
+# 14.  run these commands in the terminal
+
+python manage.py makemigrations
+
+python manage.py migrate
+
+python manage.py createsuperuser   #enter username , email , password [password is not visible]
+
+----------------------------------------------------------------
+# 15.  run django project
+
+Starting WSGI development server at http://127.0.0.1:8000/   --> click on this link
+
+----------------------------------------------------------------
+# 16.  to open  django admin dasboard - use the below in the  browser
+
+http://127.0.0.1:8000/admin
+
+login in with username & password 
+
+then check Book -> click on add book --> add data and save
+----------------------------------------------------------------
